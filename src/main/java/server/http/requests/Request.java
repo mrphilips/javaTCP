@@ -5,6 +5,8 @@ package main.java.server.http.requests;
  */
 public class Request {
     private String fullRequest;
+
+    private String header;
     private String url;
 
     public Request(String fullRequest){
@@ -14,15 +16,19 @@ public class Request {
     public void extractDatas(){
         String[] lines = fullRequest.split("\n");
 
-        String header = lines[0];
+        header = lines[0];
 
         url = header.split(" ")[1];
+        if(url.startsWith("/"))
+            url = url.substring(1,url.length());
 
         System.out.println(url);
 
     }
 
     public String getURL(){return url;}
+
+    public String getHeader(){return header;}
 
     @Override
     public String toString(){

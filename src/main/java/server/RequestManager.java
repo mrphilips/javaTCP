@@ -1,5 +1,7 @@
 package main.java.server;
 
+import main.java.server.http.processes.GetResourceProcess;
+import main.java.server.http.processes.Process;
 import main.java.server.http.requests.Request;
 import main.java.server.http.responses.Response;
 
@@ -12,20 +14,24 @@ public class RequestManager {
 
     public RequestManager(Request request){
         this.request=request;
+        this.response = new Response();
 
+    }
+
+    public void handleRequest(){
         request.extractDatas();
 
-        //System.out.println(request);
+        Process process = new GetResourceProcess(request,response);
+        process.process();
 
-        this.response = new Response(200);
+        response = process.getResponse();
+
+
     }
 
     public Request getRequest(){return request;}
 
-    public String getResponse(){
-        if(request.getURL().equals("/mystyle.css"))
-            return "h1{background-color:grey;" +
-                    "text-align:center;}";
-        return response.getResponseString();
+    public Response getResponse(){
+        return response;
     }
 }

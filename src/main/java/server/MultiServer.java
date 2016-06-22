@@ -26,13 +26,14 @@ public class MultiServer implements Runnable {
              input  = clientSocket.getInputStream();
              output = clientSocket.getOutputStream();
 
-            String ss = readInput();
-
-            RequestManager requestManager = new RequestManager(new Request(ss));
+            RequestManager requestManager = new RequestManager(new Request(readInput()));
+            requestManager.handleRequest();
 
             long time = System.currentTimeMillis();
 
-            output.write(requestManager.getResponse().getBytes());
+          //  output.write(requestManager.getResponse().getResponseString().getBytes());
+            output.write(requestManager.getResponse().getResponseBytes());
+
             output.close();
             input.close();
             //System.out.println("Request processed: " + time);
